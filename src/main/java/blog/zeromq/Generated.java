@@ -95,7 +95,7 @@ public interface Generated extends Library {
 
 		int zmq_msg_copy(test.zmq_msg_t dest, test.zmq_msg_t src);
 
-		Pointer zmq_msg_data(test.zmq_msg_t msg);
+	Pointer zmq_msg_data(test.zmq_msg_t msg);
 
 		NativeSize zmq_msg_size(test.zmq_msg_t msg);
 

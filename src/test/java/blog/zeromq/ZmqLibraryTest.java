@@ -2,6 +2,7 @@ package blog.zeromq;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import junit.framework.TestCase;
 
 public class ZmqLibraryTest extends TestCase {
@@ -33,6 +34,18 @@ public class ZmqLibraryTest extends TestCase {
 		zmq_msg_t message = new zmq_msg_t();
 		zmqLibrary.zmq_msg_init(message);
 		assertEquals(0, zmqLibrary.zmq_msg_close(message));
+	}
+
+	public void testMove()	{
+		zmq_msg_t source = new zmq_msg_t();
+		zmq_msg_t destination = new zmq_msg_t();
+
+		//assertEquals(1, zmqLibrary.zmq_msg_move(source, destination));
+	}
+
+	public void testZmqData()	{
+		Pointer data = zmqLibrary.zmq_msg_data(new zmq_msg_t());
+		assertNotNull(data);
 	}
 
 	public void setUp()	{
