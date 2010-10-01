@@ -40,5 +40,5 @@ public class Zmq {
 		return result;
 	}
 
-	private ZmqLibrary zmqLibrary;
+	private final ZmqLibrary zmqLibrary;
 }
