@@ -42,4 +42,7 @@ public interface ZmqLibrary extends Library {
 	int zmq_msg_copy (zmq_msg_t dest, zmq_msg_t src);
 	Pointer zmq_msg_data(zmq_msg_t msg);
 	NativeLong zmq_msg_size (zmq_msg_t msg);
+
+	Pointer zmq_init(int io_threads);
+	int zmq_term (Pointer context);
 }

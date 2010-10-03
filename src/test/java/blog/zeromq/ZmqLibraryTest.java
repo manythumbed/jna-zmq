@@ -108,6 +108,15 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(content.length() + 1, zmqLibrary.zmq_msg_size(message).intValue()); // +1 for nul termination
 	}
 
+	public void testInit()	{
+		assertNotNull(zmqLibrary.zmq_init(1));
+	}
+
+	public void testTerm()	{
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertEquals(0, zmqLibrary.zmq_term(context));
+	}
+
 	public void setUp() {
 		zmqLibrary = (ZmqLibrary) Native.loadLibrary("zmq", ZmqLibrary.class);
 	}
