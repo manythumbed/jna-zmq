@@ -72,6 +72,20 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals("", asJavaString(zmqLibrary.zmq_msg_data(destination).getString(0)));
 	}
 
+	public void testCopy()	{
+		String content = "content";
+		Memory payload = asMemory(content);
+
+		zmq_msg_t original = new zmq_msg_t();
+		zmq_msg_t copy = new zmq_msg_t();
+		assertEquals(0, zmqLibrary.zmq_msg_init_data(original, payload, new NativeLong(payload.size()), null, null));
+		assertEquals(0, zmqLibrary.zmq_msg_init(copy));
+		assertEquals(0, zmqLibrary.zmq_msg_copy(copy, original));
+
+		assertEquals(content, asJavaString(zmqLibrary.zmq_msg_data(copy).getString(0)));
+
+	}
+
 	public void testData()	{
 		String content = "content";
 
