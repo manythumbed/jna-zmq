@@ -29,14 +29,25 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(0, zmqLibrary.zmq_msg_init(new zmq_msg_t()));
 		assertEquals(0, zmqLibrary.zmq_msg_init_size(new zmq_msg_t(), new NativeLong(10)));
 
+		String string = "data";
 		zmq_msg_t message = new zmq_msg_t();
-
-		Memory memory = new Memory("data".getBytes().length);
-		memory.write(0l, "data".getBytes(), 0, "data".getBytes().length);
-		assertEquals(0, zmqLibrary.zmq_msg_init_data(message, memory, new NativeLong("data".length()), null, "hint".getBytes()));
+		Memory data = asMemory(string);
+		assertEquals(0, zmqLibrary.zmq_msg_init_data(message, data, new NativeLong(data.size()), null, "hint".getBytes()));
 
 		String content = zmqLibrary.zmq_msg_data(message).getString(0);
-		assertEquals("data", content.substring(0, content.length() - 1));
+		assertEquals(string, asJavaString(content));
+	}
+
+	private Memory asMemory(String data)	{
+		byte[] terminated = Native.toByteArray(data);
+		Memory memory = new Memory(terminated.length);
+		memory.write(0l, terminated, 0, terminated.length);
+
+		return memory;
+	}
+
+	private String asJavaString(String data)	{
+		return Native.toString(data.getBytes());
 	}
 
 	public void testMsgClose()	{
