@@ -3,6 +3,7 @@ package blog.zeromq;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 import junit.framework.TestCase;
 
 public class ZmqLibraryTest extends TestCase {
@@ -32,7 +33,7 @@ public class ZmqLibraryTest extends TestCase {
 		String string = "data";
 		zmq_msg_t message = new zmq_msg_t();
 		Memory data = asMemory(string);
-		assertEquals(0, zmqLibrary.zmq_msg_init_data(message, data, new NativeLong(data.size()), null, "hint".getBytes()));
+		assertEquals(0, zmqLibrary.zmq_msg_init_data(message, data, new NativeLong(data.size()), null, asMemory("hint")));
 
 		String content = zmqLibrary.zmq_msg_data(message).getString(0);
 		assertEquals(string, asJavaString(content));
@@ -56,34 +57,32 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(0, zmqLibrary.zmq_msg_close(message));
 	}
 
-//	public void testMove()	{
-//		byte[] srcContent = "source".getBytes();
-//		Memory srcMemory = new Memory(srcContent.length);
-//		srcMemory.write(0l, srcContent, 0, srcContent.length);
-//		byte[] destContent = "destination".getBytes();
-//
-//		zmq_msg_t source = new zmq_msg_t();
-//		zmq_msg_t destination = new zmq_msg_t();
-//
-//		assertEquals(0, zmqLibrary.zmq_msg_init_data(source, srcContent, new NativeLong(srcContent.length), null, null));
-//		assertEquals(0, zmqLibrary.zmq_msg_init_data(destination, destContent, new NativeLong(destContent.length), null, null));
-//
-//		assertEquals(0, zmqLibrary.zmq_msg_move(source, destination));
-//
-//	}
+	public void testMove()	{
+		zmq_msg_t source = new zmq_msg_t();
+		zmq_msg_t destination = new zmq_msg_t();
 
-//	public void testZmqData()	{
-//		byte[] content = "content".getBytes();
-//
-//		zmq_msg_t message = new zmq_msg_t();
-//		zmqLibrary.zmq_msg_init_data(message, content, new NativeLong(content.length), null, null);
-//
-//		Pointer pointer = zmqLibrary.zmq_msg_data(message);
-//		assertNotNull(pointer);
-//		System.out.println("MSG: " + message.content);
-//
-//		assertEquals("X".getBytes(), pointer.getByteArray(0, 1));
-//	}
+		Memory srcContent = asMemory("source");
+		Memory dstContent = asMemory("destination");
+		assertEquals(0, zmqLibrary.zmq_msg_init_data(source, srcContent, new NativeLong(srcContent.size()), null, null));
+		assertEquals(0, zmqLibrary.zmq_msg_init_data(destination, dstContent, new NativeLong(dstContent.size()), null, null));
+
+		assertEquals(0, zmqLibrary.zmq_msg_move(source, destination));
+
+		assertEquals("destination", asJavaString(zmqLibrary.zmq_msg_data(source).getString(0)));
+		assertEquals("", asJavaString(zmqLibrary.zmq_msg_data(destination).getString(0)));
+	}
+
+	public void testData()	{
+		String content = "content";
+
+		zmq_msg_t message = new zmq_msg_t();
+		Memory payload = asMemory(content);
+		zmqLibrary.zmq_msg_init_data(message, payload, new NativeLong(payload.size()), null, null);
+
+		Pointer pointer = zmqLibrary.zmq_msg_data(message);
+		assertNotNull(pointer);
+		assertEquals(content, asJavaString(pointer.getString(0)));
+	}
 
 	public void setUp()	{
 		zmqLibrary = (ZmqLibrary) Native.loadLibrary("zmq", ZmqLibrary.class);
