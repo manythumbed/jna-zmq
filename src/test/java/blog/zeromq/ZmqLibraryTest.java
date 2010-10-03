@@ -161,7 +161,7 @@ public class ZmqLibraryTest extends TestCase {
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertNotNull(context);
 
-		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_SUB);
 		assertNotNull(socket);
 
 		checkSocketOption(socket, ZmqLibrary.ZMQ_HWM, 8, 1);
@@ -169,6 +169,14 @@ public class ZmqLibraryTest extends TestCase {
 		checkSocketOption(socket, ZmqLibrary.ZMQ_AFFINITY, 8, 0);
 		// TO DO test identity with binary data
 
+		String prefix = "prefix";
+		checkSocketOption(socket, ZmqLibrary.ZMQ_SUBSCRIBE, prefix);
+
+	}
+
+	private void checkSocketOption(Pointer socket, int name, String expected) {
+		Memory data = asMemory(expected);
+		assertEquals(0, zmqLibrary.zmq_setsockopt(socket, name, data, new NativeLong(data.size())));
 	}
 
 	private void checkSocketOption(Pointer socket, int name, int capacity, int expected)	{
