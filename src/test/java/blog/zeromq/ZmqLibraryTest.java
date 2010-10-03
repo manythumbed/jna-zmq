@@ -4,9 +4,7 @@ import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
-import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.LongByReference;
-import com.sun.jna.ptr.PointerByReference;
 import junit.framework.TestCase;
 
 /**
@@ -148,12 +146,27 @@ public class ZmqLibraryTest extends TestCase {
 		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
 		assertNotNull(socket);
 
-		Memory optionValue = new Memory(8);
-		LongByReference optionLength = new LongByReference(8);
-		assertEquals(0, zmqLibrary.zmq_getsockopt(socket, ZmqLibrary.ZMQ_RCVMORE, optionValue, optionLength));
-		assertEquals(8, optionLength.getValue());
-		assertNotNull(optionValue);
-		assertEquals(0, optionValue.getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_RCVMORE, 8).getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_HWM, 8).getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_SWAP, 8).getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_AFFINITY, 8).getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_IDENTITY, 255).getInt(0));
+		assertEquals(100, getSocketOption(socket, ZmqLibrary.ZMQ_RATE, 255).getInt(0));
+		assertEquals(10, getSocketOption(socket, ZmqLibrary.ZMQ_RECOVERY_IVL, 255).getInt(0));
+		assertEquals(1, getSocketOption(socket, ZmqLibrary.ZMQ_MCAST_LOOP, 255).getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_SNDBUF, 255).getInt(0));
+		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_RCVBUF, 255).getInt(0));
+	}
+
+	private Pointer getSocketOption(Pointer socket, int name, int capacity)	{
+		Memory value = new Memory(capacity);
+		value.clear(capacity);
+		LongByReference length = new LongByReference(capacity);
+
+		assertEquals(0, zmqLibrary.zmq_getsockopt(socket, name, value, length));
+		assertNotNull(value);
+
+		return value;
 	}
 
 	public void setUp() {
