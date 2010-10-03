@@ -2,6 +2,7 @@ package blog.zeromq;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import com.sun.jna.ptr.PointerByReference;
 
 public class zmq_msg_t extends Structure {
 		public Pointer content;
