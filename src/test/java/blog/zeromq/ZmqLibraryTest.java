@@ -139,7 +139,6 @@ public class ZmqLibraryTest extends TestCase {
 	}
 
 	public void testGetsockopt()	{
-
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertNotNull(context);
 
@@ -156,6 +155,27 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(1, getSocketOption(socket, ZmqLibrary.ZMQ_MCAST_LOOP, 255).getInt(0));
 		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_SNDBUF, 255).getInt(0));
 		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_RCVBUF, 255).getInt(0));
+	}
+
+	public void testSetsockopt()	{
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
+		assertNotNull(socket);
+
+		checkSocketOption(socket, ZmqLibrary.ZMQ_HWM, 8, 1);
+		checkSocketOption(socket, ZmqLibrary.ZMQ_SWAP, 8, 123);
+		checkSocketOption(socket, ZmqLibrary.ZMQ_AFFINITY, 8, 0);
+		// TO DO test identity with binary data
+
+	}
+
+	private void checkSocketOption(Pointer socket, int name, int capacity, int expected)	{
+		Memory value = new Memory(capacity);
+		value.setInt(0, expected);
+		assertEquals(0, zmqLibrary.zmq_setsockopt(socket, name, value, new NativeLong(capacity)));
+		assertEquals(expected, getSocketOption(socket, name, capacity).getInt(0));
 	}
 
 	private Pointer getSocketOption(Pointer socket, int name, int capacity)	{
