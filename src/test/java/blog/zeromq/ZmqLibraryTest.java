@@ -4,6 +4,9 @@ import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
+import com.sun.jna.ptr.IntByReference;
+import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.PointerByReference;
 import junit.framework.TestCase;
 
 /**
@@ -135,6 +138,22 @@ public class ZmqLibraryTest extends TestCase {
 		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
 		assertNotNull(socket);
 		assertEquals(0, zmqLibrary.zmq_close(socket));
+	}
+
+	public void testGetsockopt()	{
+
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
+		assertNotNull(socket);
+
+		Memory optionValue = new Memory(8);
+		LongByReference optionLength = new LongByReference(8);
+		assertEquals(0, zmqLibrary.zmq_getsockopt(socket, ZmqLibrary.ZMQ_RCVMORE, optionValue, optionLength));
+		assertEquals(8, optionLength.getValue());
+		assertNotNull(optionValue);
+		assertEquals(0, optionValue.getInt(0));
 	}
 
 	public void setUp() {

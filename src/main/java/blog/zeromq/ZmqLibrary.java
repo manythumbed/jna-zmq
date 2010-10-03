@@ -4,6 +4,8 @@ import com.sun.jna.Library;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
+import com.sun.jna.ptr.LongByReference;
+import com.sun.jna.ptr.PointerByReference;
 
 public interface ZmqLibrary extends Library {
 
@@ -85,5 +87,7 @@ public interface ZmqLibrary extends Library {
 
 	Pointer zmq_socket (Pointer context, int type);
 	int zmq_close (Pointer socket);
+	int zmq_setsockopt (Pointer socket, int option_name, Pointer option_val, NativeLong opt_len);
+	int zmq_getsockopt(Pointer s, int option, Pointer opt_val, LongByReference opt_len);
 
 }
