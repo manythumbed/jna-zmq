@@ -28,9 +28,9 @@ public interface ZmqLibrary extends Library {
 
 	String zmq_strerror(int errnum);
 
-	int ZMQ_MAX_VSM_SIZE = 30;
-	int ZMQ_DELIMITER = 31;
-	int ZMQ_VSM = 32;
+	static final int ZMQ_MAX_VSM_SIZE = 30;
+	static final int ZMQ_DELIMITER = 31;
+	static final int ZMQ_VSM = 32;
 
 	int ZMQ_MSG_MORE = 1;
 
@@ -54,30 +54,36 @@ public interface ZmqLibrary extends Library {
 
 	int zmq_term(Pointer context);
 
-	int ZMQ_PAIR = 0;
-	int ZMQ_PUB = 1;
-	int ZMQ_SUB = 2;
-	int ZMQ_REQ = 3;
-	int ZMQ_REP = 4;
-	int ZMQ_XREQ = 5;
-	int ZMQ_XREP = 6;
-	int ZMQ_PULL = 7;
-	int ZMQ_PUSH = 8;
-	int ZMQ_UPSTREAM = ZMQ_PULL	; /*  Old alias, remove in 3.x              */
-	int ZMQ_DOWNSTREAM = ZMQ_PUSH	; /*  Old alias, remove in 3.x              */
+	static final int ZMQ_PAIR = 0;
+	static final int ZMQ_PUB = 1;
+	static final int ZMQ_SUB = 2;
+	static final int ZMQ_REQ = 3;
+	static final int ZMQ_REP = 4;
+	static final int ZMQ_XREQ = 5;
+	static final int ZMQ_XREP = 6;
+	static final int ZMQ_PULL = 7;
+	static final int ZMQ_PUSH = 8;
+	static final int ZMQ_UPSTREAM = ZMQ_PULL	; /*  Old alias, remove in 3.x              */
+	static final int ZMQ_DOWNSTREAM = ZMQ_PUSH	; /*  Old alias, remove in 3.x              */
 	
-	int ZMQ_HWM = 1;
-/* int ZMQ_LWM = 2  no longer supported */
- int ZMQ_SWAP = 3;
- int ZMQ_AFFINITY = 4;
- int ZMQ_IDENTITY = 5;
- int ZMQ_SUBSCRIBE = 6;
- int ZMQ_UNSUBSCRIBE = 7;
- int ZMQ_RATE = 8;
- int ZMQ_RECOVERY_IVL = 9;
- int ZMQ_MCAST_LOOP = 10;
- int ZMQ_SNDBUF = 11;
- int ZMQ_RCVBUF = 12;
- int ZMQ_RCVMORE = 13;
+	static final int ZMQ_HWM = 1;
+/* static final int ZMQ_LWM = 2  no longer supported */
+ static final int ZMQ_SWAP = 3;
+ static final int ZMQ_AFFINITY = 4;
+ static final int ZMQ_IDENTITY = 5;
+ static final int ZMQ_SUBSCRIBE = 6;
+ static final int ZMQ_UNSUBSCRIBE = 7;
+ static final int ZMQ_RATE = 8;
+ static final int ZMQ_RECOVERY_IVL = 9;
+ static final int ZMQ_MCAST_LOOP = 10;
+ static final int ZMQ_SNDBUF = 11;
+ static final int ZMQ_RCVBUF = 12;
+ static final int ZMQ_RCVMORE = 13;
+
+	static final int ZMQ_NOBLOCK = 1;
+	static final int ZMQ_SNDMORE = 2;
+
+	Pointer zmq_socket (Pointer context, int type);
+	int zmq_close (Pointer socket);
 
 }

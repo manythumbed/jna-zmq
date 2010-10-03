@@ -6,6 +6,9 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import junit.framework.TestCase;
 
+/**
+ * These are smoke tests to verify the JNA mapping of the ZMQ library, no actual messaging is performed.
+ */
 public class ZmqLibraryTest extends TestCase {
 
 	public void testVersion() {
@@ -115,6 +118,23 @@ public class ZmqLibraryTest extends TestCase {
 	public void testTerm()	{
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertEquals(0, zmqLibrary.zmq_term(context));
+	}
+
+	public void testSocket()	{
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
+		assertNotNull(socket);
+	}
+
+	public void testClose()	{
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_REP);
+		assertNotNull(socket);
+		assertEquals(0, zmqLibrary.zmq_close(socket));
 	}
 
 	public void setUp() {
