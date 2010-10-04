@@ -93,5 +93,6 @@ public interface ZmqLibrary extends Library {
 	int zmq_bind(Pointer socket, String address);
 	int zmq_connect(Pointer socket, String address);
 	int zmq_send(Pointer socket, zmq_msg_t message, int flags);
+	int zmq_recv(Pointer socket, zmq_msg_t message, int flags);
 
 }

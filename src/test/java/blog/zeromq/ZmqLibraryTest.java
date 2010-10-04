@@ -211,6 +211,18 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(0, zmqLibrary.zmq_send(socket, message, 0));
 	}
 
+	public void testReceive() {
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_SUB);
+		assertEquals(0, zmqLibrary.zmq_bind(socket, "inproc://my_publisher"));
+
+		zmq_msg_t message = new zmq_msg_t();
+		zmqLibrary.zmq_msg_init(message);
+		// assertEquals(0, zmqLibrary.zmq_recv(socket, message, 0));
+	}
+
 
 	private void checkSocketOption(Pointer socket, int name, String expected) {
 		Memory data = asMemory(expected);
