@@ -196,8 +196,19 @@ public class ZmqLibraryTest extends TestCase {
 		assertNotNull(context);
 
 		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_SUB);
+		assertEquals(0, zmqLibrary.zmq_connect(socket, "tcp://localhost:23"));
+	}
 
-		zmqLibrary.zmq_connect(socket, "tcp://localhost:23");
+	public void testSend() {
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_PUB);
+		assertEquals(0, zmqLibrary.zmq_connect(socket, "tcp://localhost:23"));
+
+		zmq_msg_t message = new zmq_msg_t();
+		zmqLibrary.zmq_msg_init(message);
+		assertEquals(0, zmqLibrary.zmq_send(socket, message, 0));
 	}
 
 
