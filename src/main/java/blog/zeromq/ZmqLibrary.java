@@ -65,8 +65,9 @@ public interface ZmqLibrary extends Library {
 	static final int ZMQ_XREP = 6;
 	static final int ZMQ_PULL = 7;
 	static final int ZMQ_PUSH = 8;
-	static final int ZMQ_UPSTREAM = ZMQ_PULL	; /*  Old alias, remove in 3.x              */
-	static final int ZMQ_DOWNSTREAM = ZMQ_PUSH	; /*  Old alias, remove in 3.x              */
+
+	@Deprecated static final int ZMQ_UPSTREAM = ZMQ_PULL	; /*  Old alias, remove in 3.x              */
+	@Deprecated static final int ZMQ_DOWNSTREAM = ZMQ_PUSH	; /*  Old alias, remove in 3.x              */
 	
 	static final int ZMQ_HWM = 1;
 /* static final int ZMQ_LWM = 2  no longer supported */

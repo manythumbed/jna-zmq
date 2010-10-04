@@ -170,7 +170,15 @@ public class ZmqLibraryTest extends TestCase {
 		// TO DO test identity with binary data
 
 		String prefix = "prefix";
-		checkSocketOption(socket, ZmqLibrary.ZMQ_SUBSCRIBE, prefix);
+		checkSocketOption(socket, ZmqLibrary.ZMQ_SUBSCRIBE, prefix); // Can't read this back
+		checkSocketOption(socket, ZmqLibrary.ZMQ_UNSUBSCRIBE, prefix);
+
+		checkSocketOption(socket, ZmqLibrary.ZMQ_RATE, 8, 200);
+		checkSocketOption(socket, ZmqLibrary.ZMQ_RECOVERY_IVL, 8, 200);
+//		checkSocketOption(socket, ZmqLibrary.ZMQ_MCAST_LOOP, 8, 0);
+
+		checkSocketOption(socket, ZmqLibrary.ZMQ_SNDBUF, 8, 10);
+		checkSocketOption(socket, ZmqLibrary.ZMQ_RCVBUF, 8, 10);
 
 	}
 
