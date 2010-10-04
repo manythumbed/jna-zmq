@@ -112,16 +112,16 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(content.length() + 1, zmqLibrary.zmq_msg_size(message).intValue()); // +1 for nul termination
 	}
 
-	public void testInit()	{
+	public void testInit() {
 		assertNotNull(zmqLibrary.zmq_init(1));
 	}
 
-	public void testTerm()	{
+	public void testTerm() {
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertEquals(0, zmqLibrary.zmq_term(context));
 	}
 
-	public void testSocket()	{
+	public void testSocket() {
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertNotNull(context);
 
@@ -129,7 +129,7 @@ public class ZmqLibraryTest extends TestCase {
 		assertNotNull(socket);
 	}
 
-	public void testClose()	{
+	public void testClose() {
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertNotNull(context);
 
@@ -138,7 +138,7 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(0, zmqLibrary.zmq_close(socket));
 	}
 
-	public void testGetsockopt()	{
+	public void testGetsockopt() {
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertNotNull(context);
 
@@ -157,7 +157,7 @@ public class ZmqLibraryTest extends TestCase {
 		assertEquals(0, getSocketOption(socket, ZmqLibrary.ZMQ_RCVBUF, 255).getInt(0));
 	}
 
-	public void testSetsockopt()	{
+	public void testSetsockopt() {
 		Pointer context = zmqLibrary.zmq_init(1);
 		assertNotNull(context);
 
@@ -182,19 +182,38 @@ public class ZmqLibraryTest extends TestCase {
 
 	}
 
+	public void testBind() {
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_SUB);
+
+		assertEquals(0, zmqLibrary.zmq_bind(socket, "inproc://my_publisher"));
+	}
+
+	public void testConnect() {
+		Pointer context = zmqLibrary.zmq_init(1);
+		assertNotNull(context);
+
+		Pointer socket = zmqLibrary.zmq_socket(context, ZmqLibrary.ZMQ_SUB);
+
+		zmqLibrary.zmq_connect(socket, "tcp://localhost:23");
+	}
+
+
 	private void checkSocketOption(Pointer socket, int name, String expected) {
 		Memory data = asMemory(expected);
 		assertEquals(0, zmqLibrary.zmq_setsockopt(socket, name, data, new NativeLong(data.size())));
 	}
 
-	private void checkSocketOption(Pointer socket, int name, int capacity, int expected)	{
+	private void checkSocketOption(Pointer socket, int name, int capacity, int expected) {
 		Memory value = new Memory(capacity);
 		value.setInt(0, expected);
 		assertEquals(0, zmqLibrary.zmq_setsockopt(socket, name, value, new NativeLong(capacity)));
 		assertEquals(expected, getSocketOption(socket, name, capacity).getInt(0));
 	}
 
-	private Pointer getSocketOption(Pointer socket, int name, int capacity)	{
+	private Pointer getSocketOption(Pointer socket, int name, int capacity) {
 		Memory value = new Memory(capacity);
 		value.clear(capacity);
 		LongByReference length = new LongByReference(capacity);

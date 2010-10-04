@@ -89,6 +89,8 @@ public interface ZmqLibrary extends Library {
 	Pointer zmq_socket (Pointer context, int type);
 	int zmq_close (Pointer socket);
 	int zmq_setsockopt (Pointer socket, int option_name, Pointer option_val, NativeLong opt_len);
-	int zmq_getsockopt(Pointer s, int option, Pointer opt_val, LongByReference opt_len);
+	int zmq_getsockopt(Pointer socket, int option, Pointer opt_val, LongByReference opt_len);
+	int zmq_bind(Pointer socket, String address);
+	int zmq_connect(Pointer socket, String address);
 
 }
