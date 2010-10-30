@@ -3,15 +3,12 @@ package blog.zeromq;
 import com.sun.jna.Library;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 import com.sun.jna.ptr.LongByReference;
-import com.sun.jna.ptr.PointerByReference;
 
 public interface ZmqLibrary extends Library {
 
 	void zmq_version(int[] major, int[] minor, int[] patch);
 
-	static final int ZMQ_HAUSNUMERO = 156384712;
 	static final int ENOTSUP = 1;
 	static final int EPROTONOSUPPORT = 2;
 	static final int ENOBUFS = 3;
@@ -66,33 +63,42 @@ public interface ZmqLibrary extends Library {
 	static final int ZMQ_PULL = 7;
 	static final int ZMQ_PUSH = 8;
 
-	@Deprecated static final int ZMQ_UPSTREAM = ZMQ_PULL	; /*  Old alias, remove in 3.x              */
-	@Deprecated static final int ZMQ_DOWNSTREAM = ZMQ_PUSH	; /*  Old alias, remove in 3.x              */
-	
+	@Deprecated
+	static final int ZMQ_UPSTREAM = ZMQ_PULL; /*  Old alias, remove in 3.x              */
+	@Deprecated
+	static final int ZMQ_DOWNSTREAM = ZMQ_PUSH; /*  Old alias, remove in 3.x              */
+
 	static final int ZMQ_HWM = 1;
-/* static final int ZMQ_LWM = 2  no longer supported */
- static final int ZMQ_SWAP = 3;
- static final int ZMQ_AFFINITY = 4;
- static final int ZMQ_IDENTITY = 5;
- static final int ZMQ_SUBSCRIBE = 6;
- static final int ZMQ_UNSUBSCRIBE = 7;
- static final int ZMQ_RATE = 8;
- static final int ZMQ_RECOVERY_IVL = 9;
- static final int ZMQ_MCAST_LOOP = 10;
- static final int ZMQ_SNDBUF = 11;
- static final int ZMQ_RCVBUF = 12;
- static final int ZMQ_RCVMORE = 13;
+	/* static final int ZMQ_LWM = 2  no longer supported */
+	static final int ZMQ_SWAP = 3;
+	static final int ZMQ_AFFINITY = 4;
+	static final int ZMQ_IDENTITY = 5;
+	static final int ZMQ_SUBSCRIBE = 6;
+	static final int ZMQ_UNSUBSCRIBE = 7;
+	static final int ZMQ_RATE = 8;
+	static final int ZMQ_RECOVERY_IVL = 9;
+	static final int ZMQ_MCAST_LOOP = 10;
+	static final int ZMQ_SNDBUF = 11;
+	static final int ZMQ_RCVBUF = 12;
+	static final int ZMQ_RCVMORE = 13;
 
 	static final int ZMQ_NOBLOCK = 1;
 	static final int ZMQ_SNDMORE = 2;
 
-	Pointer zmq_socket (Pointer context, int type);
-	int zmq_close (Pointer socket);
-	int zmq_setsockopt (Pointer socket, int option_name, Pointer option_val, NativeLong opt_len);
+	Pointer zmq_socket(Pointer context, int type);
+
+	int zmq_close(Pointer socket);
+
+	int zmq_setsockopt(Pointer socket, int option_name, Pointer option_val, NativeLong opt_len);
+
 	int zmq_getsockopt(Pointer socket, int option, Pointer opt_val, LongByReference opt_len);
+
 	int zmq_bind(Pointer socket, String address);
+
 	int zmq_connect(Pointer socket, String address);
+
 	int zmq_send(Pointer socket, zmq_msg_t message, int flags);
+
 	int zmq_recv(Pointer socket, zmq_msg_t message, int flags);
 
 }
