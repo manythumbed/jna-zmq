@@ -1,6 +1,7 @@
 package blog.zeromq;
 
 import com.sun.jna.Native;
+import lessthan.jna.ZmqLibrary;
 
 public class Zmq {
 

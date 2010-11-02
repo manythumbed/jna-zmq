@@ -1,4 +1,4 @@
-package blog.zeromq;
+package lessthan.jna;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;

@@ -1,4 +1,4 @@
-package blog.zeromq;
+package lessthan.jna;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
@@ -6,6 +6,8 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.ptr.LongByReference;
 import junit.framework.TestCase;
+import lessthan.jna.ZmqLibrary;
+import lessthan.jna.zmq_msg_t;
 
 /**
  * These are smoke tests to verify the JNA mapping of the ZMQ library, no actual messaging is performed.

@@ -1,4 +1,4 @@
-package blog.zeromq;
+package lessthan.jna;
 
 import com.sun.jna.Library;
 import com.sun.jna.NativeLong;
