@@ -3,7 +3,7 @@ package lessthan.jna;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 
-public class JnaHelpers {
+public class JnaUtilities {
 
 	public static Memory asMemory(String data) {
 		byte[] terminated = Native.toByteArray(data);
@@ -12,5 +12,10 @@ public class JnaHelpers {
 
 		return memory;
 	}
+
+	public static String asJavaString(String data) {
+		return Native.toString(data.getBytes());
+	}
+
 
 }
