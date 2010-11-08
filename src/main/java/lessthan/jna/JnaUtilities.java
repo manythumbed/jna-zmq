@@ -2,6 +2,7 @@ package lessthan.jna;
 
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
+import com.sun.jna.Pointer;
 
 public class JnaUtilities {
 
@@ -15,6 +16,10 @@ public class JnaUtilities {
 
 	public static String asJavaString(String data) {
 		return Native.toString(data.getBytes());
+	}
+
+	public static String asJavaString(Pointer pointer)	{
+		return asJavaString(pointer.getString(0));
 	}
 
 

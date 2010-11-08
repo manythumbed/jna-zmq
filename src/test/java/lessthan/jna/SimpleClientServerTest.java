@@ -68,7 +68,7 @@ public class SimpleClientServerTest extends TestCase {
 
 			ZMQ.zmq_recv(socket, response, 0);
 
-			return JnaUtilities.asJavaString(ZMQ.zmq_msg_data(response).getString(0));
+			return JnaUtilities.asJavaString(ZMQ.zmq_msg_data(response));
 		}
 	}
 }
