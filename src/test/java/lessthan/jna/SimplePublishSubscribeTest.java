@@ -29,10 +29,10 @@ public class SimplePublishSubscribeTest extends TestCase {
 			int rc;
 			Pointer context = ZMQ_LIBRARY.zmq_init(1);
 			Pointer subscriber = ZMQ_LIBRARY.zmq_socket(context, ZmqLibrary.ZMQ_SUB);
-			rc = ZMQ_LIBRARY.zmq_connect(subscriber, "tcp://*:5678");
+			rc = ZMQ_LIBRARY.zmq_connect(subscriber, "tcp://localhost:5556");
 			assert(rc == 0);
-			Memory filter = asMemory("M");
-			rc =ZMQ_LIBRARY.zmq_setsockopt(subscriber, ZmqLibrary.ZMQ_SUBSCRIBE, filter, new NativeLong(filter.size()));
+			Memory filter = asMemory("");
+			rc =ZMQ_LIBRARY.zmq_setsockopt(subscriber, ZmqLibrary.ZMQ_SUBSCRIBE, filter, new NativeLong(0));
 			assert(rc == 0);
 
 			Pointer control = ZMQ_LIBRARY.zmq_socket(context, ZmqLibrary.ZMQ_REQ);
@@ -66,7 +66,8 @@ public class SimplePublishSubscribeTest extends TestCase {
 			int rc;
 			Pointer context = ZMQ_LIBRARY.zmq_init(1);
 			Pointer publisher = ZMQ_LIBRARY.zmq_socket(context, ZmqLibrary.ZMQ_PUB);
-			rc = ZMQ_LIBRARY.zmq_bind(publisher, "tcp://*:5678");
+			rc = ZMQ_LIBRARY.zmq_bind(publisher, "tcp://*:5556");
+			ZMQ_LIBRARY.zmq_bind(publisher, "ipc://weather.ipc");
 			assert(rc == 0);
 
 			Pointer control = ZMQ_LIBRARY.zmq_socket(context, ZmqLibrary.ZMQ_REP);
@@ -78,7 +79,11 @@ public class SimplePublishSubscribeTest extends TestCase {
 			rc = ZMQ_LIBRARY.zmq_recv(control, controlMessage, 0);
 
 			System.out.println("Sending messages");
-			while (true) {
+			while(true)	{
+//			for(int i = 0; i < 10000; i++)	{
+//				if(i % 100 == 0)	{
+//					System.out.println("Sent " + i);
+//				}
 				Memory data = asMemory("Message");
 				zmq_msg_t message = new zmq_msg_t();
 				rc = ZMQ_LIBRARY.zmq_msg_init_data(message, data, new NativeLong(data.size()), null, null);
@@ -89,10 +94,8 @@ public class SimplePublishSubscribeTest extends TestCase {
 				assert(rc == 0);
 			}
 
-			/*
-			ZMQ_LIBRARY.zmq_close(publisher);
-			ZMQ_LIBRARY.zmq_term(context);
-			*/
+//			ZMQ_LIBRARY.zmq_close(publisher);
+//			ZMQ_LIBRARY.zmq_term(context);
 		}
 	}
 }
